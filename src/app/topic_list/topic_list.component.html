@@ -1,0 +1,11 @@
+﻿<h1>Hi {{currentUser.firstName}}!</h1>
+<h3>Eassy Topics:</h3>
+<ul>
+    <li *ngFor="let topic of topics">
+        {{topic.name}}
+    </li>
+</ul>
+<br>
+<br>
+
+<p><a [routerLink]="['/base']">Logout</a></p>

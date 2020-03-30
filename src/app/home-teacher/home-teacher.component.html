@@ -1,0 +1,21 @@
+﻿<h1>Hi {{currentUser.firstName}}!</h1>
+<form [formGroup]="AddTopicForm" (ngSubmit)="add_topic_submitted(); resetForm()">
+	<input type = "text" name = "new_topic" formControlName="new_topic" value = "Add new topic" maxlength = "40" style='margin-right:16px' />
+	<button [disabled]="loading" class="btn btn-primary">Add topics</button>
+	<br>
+	<br>
+</form>
+<button [routerLink]="['/topic_list']" class="btn btn-primary">View topic list</button>
+<br>
+<br>
+<h3>All registered students:</h3>
+<ul>
+    <li *ngFor="let user of users">
+        {{user.username}} ({{user.firstName}} {{user.lastName}})
+        - <a (click)="deleteUser(user.id)" class="text-danger">Evaluate</a>
+    </li>
+</ul>
+<br>
+<br>
+
+<p><a [routerLink]="['/base']">Logout</a></p>

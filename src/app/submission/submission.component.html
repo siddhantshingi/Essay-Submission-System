@@ -1,0 +1,10 @@
+﻿<h1>Essay submission page</h1>
+<form [formGroup]="eassyForm" (ngSubmit)="submit_eassy()">
+	<input type = "text" name = "topic" formControlName="topic" value = "topic name" maxlength = "40" style='margin-bottom:16px' />
+	<a>max 250 words</a>
+	<input type = "text" name = "eassy" formControlName="eassy" value = "write eassy here" maxlength = "250" style="height:200px;font-size:14pt;margin-bottom:16px;" />
+	<button [disabled]="loading" class="btn btn-primary">Submit</button>
+	<br>
+	<br>
+</form>
+<p><a [routerLink]="['/base']">Logout</a></p>
