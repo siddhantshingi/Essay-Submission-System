@@ -19,6 +19,7 @@ import { BaseComponent } from './base';
 import { TopicListComponent } from './topic_list';
 import { LoginStudentComponent } from './login-student';
 import { LoginTeacherComponent } from './login-teacher';
+import { SubmissionComponent } from './submission';
 import { RegisterComponent } from './register';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { RegisterComponent } from './register';
         LoginStudentComponent,
         LoginTeacherComponent,
         TopicListComponent,
+        SubmissionComponent,
         RegisterComponent
     ],
     providers: [
