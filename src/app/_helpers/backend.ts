@@ -2,6 +2,8 @@
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
+import { User, Topic, Eassy } from '../_models';
+
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -13,6 +15,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
         let teachers: any[] = JSON.parse(localStorage.getItem('teachers')) || [];
         let topics: any[] = JSON.parse(localStorage.getItem('topics')) || [];
+        let eassys: any[] = JSON.parse(localStorage.getItem('eassys')) || [];
 
         // wrap in delayed observable to simulate server api call
         return of(null).pipe(mergeMap(() => {
@@ -83,6 +86,66 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     return of(new HttpResponse({ status: 200, body: topics }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ status: 401, error: { message: 'Unauthorised' } });
+                }
+            }
+
+            // get submissions
+            if (request.url.endsWith('/submissions') && request.method === 'POST') {
+                // find user by id in users array
+                let username = request.body;
+                let spec_eassys: Eassy[] = [];
+                for (let i = 0; i < eassys.length; i++) {
+                    let eassy = eassys[i];
+                    if (eassy.username === username) {
+                        spec_eassys.push(eassy);
+                    }
+                }
+                // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    return of(new HttpResponse({ status: 200, body: spec_eassys }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ status: 401, error: { message: 'Unauthorised' } });
+                }
+            }
+
+            // get all submissions
+            if (request.url.endsWith('/submissions') && request.method === 'GET') {
+                // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    return of(new HttpResponse({ status: 200, body: eassys }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ status: 401, error: { message: 'Unauthorised' } });
+                }
+            }
+
+            // get submissions
+            if (request.url.endsWith('/submissions/id') && request.method === 'POST') {
+                // find user by id in users array
+                let user_id = request.body;
+                let username: String;
+                for (let i = 0; i < users.length; i++) {
+                    let user = users[i];
+                    if (user.id === user_id) {
+                        username = user.username;
+                        break;
+                    }
+                }
+
+                let spec_eassys: Eassy[] = [];
+                for (let i = 0; i < eassys.length; i++) {
+                    let eassy = eassys[i];
+                    if (eassy.id === username) {
+                        spec_eassys.push(eassy);
+                    }
+                }
+                // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    return of(new HttpResponse({ status: 200, body: spec_eassys }));
                 } else {
                     // return 401 not authorised if token is null or invalid
                     return throwError({ status: 401, error: { message: 'Unauthorised' } });
@@ -173,6 +236,23 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return of(new HttpResponse({ status: 200 }));
             }
 
+            // submit eassy
+            if (request.url.endsWith('/users/submit_eassy') && request.method === 'POST') {
+
+                // get new user object from post body
+                let newEassy = request.body;
+                newEassy.id = eassys.length + 1;
+
+                // save new user
+                eassys.push(newEassy);
+                localStorage.setItem('eassys', JSON.stringify(eassys));
+
+                console.log(eassys);
+
+                // respond 200 OK
+                return of(new HttpResponse({ status: 200 }));
+            }
+
             // delete user
             if (request.url.match(/\/users\/\d+$/) && request.method === 'DELETE') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
@@ -186,6 +266,31 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                             // delete user
                             users.splice(i, 1);
                             localStorage.setItem('users', JSON.stringify(users));
+                            break;
+                        }
+                    }
+
+                    // respond 200 OK
+                    return of(new HttpResponse({ status: 200 }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ status: 401, error: { message: 'Unauthorised' } });
+                }
+            }
+            
+            // delete user
+            if (request.url.match(/\/submission\/\d+$/) && request.method === 'DELETE') {
+                // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    // find user by id in users array
+                    let urlParts = request.url.split('/');
+                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    for (let i = 0; i < eassys.length; i++) {
+                        let eassy = eassys[i];
+                        if (eassy.id === id) {
+                            // delete user
+                            eassys.splice(i, 1);
+                            localStorage.setItem('eassys', JSON.stringify(eassys));
                             break;
                         }
                     }

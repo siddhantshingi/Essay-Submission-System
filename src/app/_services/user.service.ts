@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { User, Topic } from '../_models';
+import { User, Topic, Eassy } from '../_models';
 
 @Injectable()
 export class UserService {
@@ -13,6 +13,18 @@ export class UserService {
 
     getAll_topics() {
         return this.http.get<Topic[]>(`${config.apiUrl}/topics`);
+    }
+
+    getAll_submissions(username: String) {
+        return this.http.post<Eassy[]>(`${config.apiUrl}/submissions`,username);
+    }
+
+    getAll_sub() {
+        return this.http.get<Eassy[]>(`${config.apiUrl}/submissions`);
+    }
+
+    getAll_submissions_by_userid(id: number) {
+        return this.http.post<Eassy[]>(`${config.apiUrl}/submissions/id`,id);
     }
 
     getById(id: number) {
@@ -35,8 +47,16 @@ export class UserService {
         return this.http.delete(`${config.apiUrl}/users/` + id);
     }
 
+    delete_submission(id: number) {
+        return this.http.delete(`${config.apiUrl}/submission/` + id);
+    }
+
     add_topic(new_topic: Topic) {
-        console.log(new_topic.name)
         return this.http.post(`${config.apiUrl}/add_topic`, new_topic)
     }
+
+    submit_eassy(new_eassy: Eassy) {
+        return this.http.post(`${config.apiUrl}/users/submit_eassy`, new_eassy)
+    }
+
 }

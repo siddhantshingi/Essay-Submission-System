@@ -8,6 +8,8 @@ import { LoginTeacherComponent } from './login-teacher';
 import { TopicListComponent } from './topic_list';
 import { RegisterComponent } from './register';
 import { SubmissionComponent } from './submission';
+import { SubmissionListComponent } from './submission_list';
+import { EassyListComponent } from './eassy_list';
 import { AuthGuard } from './_guards';
 
 const appRoutes: Routes = [
@@ -19,6 +21,8 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'topic_list', component: TopicListComponent },
     { path: 'submission', component: SubmissionComponent },
+    { path: 'submission_list', component: SubmissionListComponent },
+    { path: 'eassy_list', component: EassyListComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

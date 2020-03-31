@@ -2,7 +2,7 @@
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
-import { User, Topic } from '../_models';
+import { User, Topic, Eassy } from '../_models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // import { UserService } from '../_services';
@@ -14,9 +14,11 @@ import { AlertService, UserService } from '../_services';
 export class HomeTeacherComponent implements OnInit {
     currentUser: User;
     users: User[] = [];
+    submissions: Eassy[] = [];
     loading = false;
     new_topic: Topic;
     AddTopicForm: FormGroup;
+    showSubmissions = false;
 
     constructor(private userService: UserService,
         private router: Router,
@@ -62,6 +64,17 @@ export class HomeTeacherComponent implements OnInit {
 
     resetForm() {
         this.AddTopicForm.reset();
+    }
+
+    showUserSubmissions(id: number) {
+        this.userService.getAll_submissions_by_userid(id).pipe(first()).subscribe(eassys => { 
+            this.submissions = eassys; 
+        });
+        this.showSubmissions = true;
+        
+        // this.userService.delete(id).pipe(first()).subscribe(() => { 
+            // this.loadAllUsers() 
+        // });
     }
 
     deleteUser(id: number) {

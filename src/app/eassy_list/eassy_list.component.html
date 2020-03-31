@@ -1,0 +1,16 @@
+﻿<h1>Hi {{currentUser.firstName}}!</h1>
+<h3>Here are the submitted Essays:</h3>
+<ul>
+    <li *ngFor="let submission of submissions">
+        
+    	{{submission.username}} ({{submission.topic}})
+    	<br>
+    	<textarea name = "eassy" value = "{{submission.eassy}}" maxlength = "4000" wrap="hard" style="height:20em;width:30em;font-size:14pt;margin-bottom:16px;" disabled>write eassy here</textarea>
+		<a>Marks: </a>
+		<input type = "text" name = "marks" style="margin-bottom:16px;"/>
+		<button [disabled]="loading" (click)="submitEvaluation()" class="btn btn-primary">submit evaluation</button>
+		<br>
+		<br>
+    </li>
+</ul>
+<p><a [routerLink]="['/base']">Logout</a></p>

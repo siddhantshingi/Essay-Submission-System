@@ -12,10 +12,10 @@
 <ul>
     <li *ngFor="let user of users">
         {{user.username}} ({{user.firstName}} {{user.lastName}})
-        - <a (click)="deleteUser(user.id)" class="text-danger">Evaluate</a>
     </li>
 </ul>
 <br>
+<button [routerLink]="['/eassy_list']" class="btn btn-primary">Evaluate essays</button>
 <br>
-
+<br>
 <p><a [routerLink]="['/base']">Logout</a></p>

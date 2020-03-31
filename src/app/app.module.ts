@@ -20,6 +20,8 @@ import { TopicListComponent } from './topic_list';
 import { LoginStudentComponent } from './login-student';
 import { LoginTeacherComponent } from './login-teacher';
 import { SubmissionComponent } from './submission';
+import { SubmissionListComponent } from './submission_list';
+import { EassyListComponent } from './eassy_list';
 import { RegisterComponent } from './register';
 
 @NgModule({
@@ -39,6 +41,8 @@ import { RegisterComponent } from './register';
         LoginTeacherComponent,
         TopicListComponent,
         SubmissionComponent,
+        SubmissionListComponent,
+        EassyListComponent,
         RegisterComponent
     ],
     providers: [

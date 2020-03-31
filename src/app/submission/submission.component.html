@@ -1,10 +1,14 @@
 ﻿<h1>Essay submission page</h1>
+<a>Username:</a><br>
+<input type = "text" value="{{currentUser.username}}" style='margin-bottom:16px' disabled/>
+<br>
 <form [formGroup]="eassyForm" (ngSubmit)="submit_eassy()">
+	<a>Topic:</a><br>
 	<input type = "text" name = "topic" formControlName="topic" value = "topic name" maxlength = "40" style='margin-bottom:16px' />
 	<br>
-	<a>max 250 words</a>
+	<a>max 4000 chars</a>
 	<br>
-	<input type = "text" name = "eassy" formControlName="eassy" value = "write eassy here" maxlength = "250" style="height:50em;width:40em;font-size:14pt;margin-bottom:16px;" />
+	<textarea name = "eassy" formControlName="eassy" value = "write eassy here" maxlength = "4000" wrap="hard" style="height:30em;width:40em;font-size:14pt;margin-bottom:16px;">write eassy here</textarea>
 	<br>
 	<button [disabled]="loading" class="btn btn-primary">Submit</button>
 	<br>
